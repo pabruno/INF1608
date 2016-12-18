@@ -39,14 +39,16 @@ void RKAdaptiveStep(double e, double h, double theta0, double time, double Hmin,
 	double v1 = 0.0, v2 = 0.0;
 	double aux1;
 	int numPassos;
-	FILE *analytical = fopen("analytical.txt", "w");
-	FILE *calculated = fopen("calculated.txt", "w");
+	FILE *analytical = fopen("analytical.txt", "a");
+	FILE *calculated = fopen("calculated.txt", "a");
 
 	if (analytical == NULL || calculated == NULL) {
 		printf("ERRO NA ABERTURA DE ARQUIVO\n");
 		exit(1);
 	}
 
+	fprintf(calculated,"%.5g:\n", theta0);
+	fprintf(analytical, "%.5g:\n", theta0);
 	fprintf(calculated, "c:=pointplot([");
 	fprintf(analytical, "a:=pointplot([");
 	fprintf(calculated, "[%.5g, %.5g]", 0.0, theta0);
@@ -82,8 +84,8 @@ void RKAdaptiveStep(double e, double h, double theta0, double time, double Hmin,
 		fprintf(analytical, ",[%.5g, %.5g]", i, analyticalResult(theta0, i));
 	}
 
-	fprintf(calculated, "],color=red):");
-	fprintf(analytical, "],color=green):");
+	fprintf(calculated, "],color=red,connect):\n\n");
+	fprintf(analytical, "],color=green,connect):\n\n");
 
 	fclose(calculated);
 	fclose(analytical);
